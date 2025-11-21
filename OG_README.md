@@ -6,7 +6,6 @@ Claude Quickstarts is a collection of projects designed to help developers quick
 
 To use these quickstarts, you'll need an Claude API key. If you don't have one yet, you can sign up for free at [console.anthropic.com](https://console.anthropic.com).
 
-## Available Quickstarts
 
 ### Customer Support Agent
 
@@ -14,17 +13,6 @@ A customer support agent powered by Claude. This project demonstrates how to lev
 
 [Go to Customer Support Agent Quickstart](./customer-support-agent)
 
-### Financial Data Analyst
-
-A financial data analyst powered by Claude. This project demonstrates how to leverage Claude's capabilities with interactive data visualization to analyze financial data via chat.
-
-[Go to Financial Data Analyst Quickstart](./financial-data-analyst)
-
-### Computer Use Demo
-
-An environment and tools that Claude can use to control a desktop computer. This project demonstrates how to leverage the computer use capabilities of the new Claude 3.5 Sonnet model.
-
-[Go to Computer Use Demo Quickstart](./computer-use-demo)
 
 ## General Usage
 
@@ -43,10 +31,6 @@ To deepen your understanding of working with Claude and the Claude API, check ou
 - [Claude API Documentation](https://docs.claude.com)
 - [Claude Cookbooks](https://github.com/anthropics/claude-cookbooks) - A collection of code snippets and guides for common tasks
 - [Claude API Fundamentals Course](https://github.com/anthropics/courses/tree/master/anthropic_api_fundamentals)
-
-## Contributing
-
-We welcome contributions to the Claude Quickstarts repository! If you have ideas for new quickstart projects or improvements to existing ones, please open an issue or submit a pull request.
 
 ## Community and Support
 
