@@ -1,0 +1,49 @@
+{
+  "firm_name": "TestFirm",
+  "policy_version": "2025-11",
+  "last_updated": "2025-11-18T19:46:55.111Z",
+  "generated_by_llm": true,
+  "total_iterations": 2,
+  "rules": [
+    {
+      "rule_id": "no_trade_earnings_blackout",
+      "rule_name": "Earnings Announcement Blackout Period",
+      "description": "Prohibits trading within 5 days before or after earnings announcements",
+      "policy_reference": "Earnings Blackout Policy",
+      "python_code": "def rule(employee, security, trade_date):\n    \"\"\"Enforce 5-day blackout period around earnings announcements.\"\"\"\n    from datetime import timedelta\n    \n    if security is None:\n        return {\"allowed\": True, \"reason\": None, \"policy_ref\": None}\n    \n    earnings_date = security.get(\"next_earnings_date\") or security.get(\"last_earnings_date\")\n    \n    if earnings_date is None:\n        return {\"allowed\": True, \"reason\": None, \"policy_ref\": None}\n    \n    # Calculate blackout window: 5 days before and 5 days after\n    blackout_start = earnings_date - timedelta(days=5)\n    blackout_end = earnings_date + timedelta(days=5)\n    \n    if blackout_start <= trade_date <= blackout_end:\n        return {\n            \"allowed\": False,\n            \"reason\": f\"Trade date falls within 5-day blackout period around earnings announcement on {earnings_date.strftime('%Y-%m-%d')}\",\n            \"policy_ref\": \"Earnings Blackout Policy\"\n        }\n    \n    return {\"allowed\": True, \"reason\": None, \"policy_ref\": None}",
+      "applies_to_roles": [],
+      "active": true,
+      "generation_attempt": 1,
+      "validation_history": [
+        {
+          "attempt_number": 1,
+          "passed": true,
+          "test_output": "{\"allowed\":true,\"reason\":null,\"policy_ref\":null}",
+          "timestamp": "2025-11-18T19:46:54.197Z"
+        }
+      ]
+    },
+    {
+      "rule_id": "analyst_covered_security_preapproval",
+      "rule_name": "Analyst Pre-Approval for Covered Securities",
+      "description": "Requires analysts to obtain pre-approval before trading securities they cover",
+      "policy_reference": "Analyst Trading Policy",
+      "python_code": "def rule(employee, security, trade_date):\n    \"\"\"Enforce pre-approval requirement for analysts trading covered securities.\"\"\"\n    \n    if security is None:\n        return {\"allowed\": True, \"reason\": None, \"policy_ref\": None}\n    \n    # Check if employee is an analyst\n    employee_role = employee.get(\"role\", \"\").lower()\n    analyst_roles = [\"analyst\", \"research analyst\", \"senior analyst\"]\n    \n    is_analyst = any(role in employee_role for role in analyst_roles)\n    \n    if not is_analyst:\n        return {\"allowed\": True, \"reason\": None, \"policy_ref\": None}\n    \n    # Check if security is covered by this analyst\n    covered_securities = employee.get(\"covered_securities\", [])\n    security_ticker = security.get(\"ticker\", \"\")\n    security_id = security.get(\"security_id\", \"\")\n    \n    is_covered = (security_ticker in covered_securities or \n                  security_id in covered_securities)\n    \n    if not is_covered:\n        return {\"allowed\": True, \"reason\": None, \"policy_ref\": None}\n    \n    # Check for pre-approval\n    has_preapproval = employee.get(\"preapproval_granted\", False)\n    preapproved_securities = employee.get(\"preapproved_securities\", [])\n    \n    is_preapproved = (has_preapproval and \n                     (security_ticker in preapproved_securities or \n                      security_id in preapproved_securities))\n    \n    if not is_preapproved:\n        return {\n            \"allowed\": False,\n            \"reason\": f\"Analyst must obtain pre-approval before trading covered security {security_ticker or security_id}\",\n            \"policy_ref\": \"Analyst Trading Policy\"\n        }\n    \n    return {\"allowed\": True, \"reason\": None, \"policy_ref\": None}",
+      "applies_to_roles": [
+        "Analyst",
+        "Research Analyst",
+        "Senior Analyst"
+      ],
+      "active": true,
+      "generation_attempt": 1,
+      "validation_history": [
+        {
+          "attempt_number": 1,
+          "passed": true,
+          "test_output": "{\"allowed\":true,\"reason\":null,\"policy_ref\":null}",
+          "timestamp": "2025-11-18T19:46:55.110Z"
+        }
+      ]
+    }
+  ]
+}
